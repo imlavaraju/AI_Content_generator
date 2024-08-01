@@ -11,6 +11,7 @@ const User = require("./models/User");
 require("./utils/connectDB")();
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 8090;
 
 //Cron for the trial period : run every single
@@ -101,7 +102,7 @@ const corsOptions = {
   origin: "https://ai-content-generator-hazel.vercel.app",
   credentials: true,
 };
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 //----Routes-----
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/openai", openAIRouter);
