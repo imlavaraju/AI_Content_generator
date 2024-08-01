@@ -15,8 +15,9 @@ const PORT = process.env.PORT || 8090;
 
 // CORS options
 const corsOptions = {
-  origin: "*", // Allow any origin
+  origin: "https://ai-content-generator-hazel.vercel.app",
   credentials: true,
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 app.use(cors(corsOptions)); // Use CORS with options
