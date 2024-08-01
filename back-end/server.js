@@ -101,7 +101,7 @@ const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
 };
-//app.use(cors(corsOptions));
+//app.use(cors());
 //----Routes-----
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/openai", openAIRouter);
