@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const handleFreeSubscriptionAPI = async () => {
   const response = await axios.post(
-    "https://ai-content-generator-lsi9-kyyka1wgl-lavarajus-projects.vercel.app/api/v1/stripe/free-plan",
+    "https://ai-content-generator-lsi9-git-main-lavarajus-projects.vercel.app/api/v1/stripe/free-plan",
     {},
     {
       withCredentials: true,
@@ -16,7 +16,7 @@ export const handleFreeSubscriptionAPI = async () => {
 export const createStripePaymentIntentAPI = async (payment) => {
   console.log(payment);
   const response = await axios.post(
-    "https://ai-content-generator-lsi9-kyyka1wgl-lavarajus-projects.vercel.app/api/v1/stripe/checkout",
+    "https://ai-content-generator-lsi9-git-main-lavarajus-projects.vercel.app/api/v1/stripe/checkout",
     {
       amount: Number(payment?.amount),
       subscriptionPlan: payment?.plan,
@@ -31,7 +31,7 @@ export const createStripePaymentIntentAPI = async (payment) => {
 
 export const verifyPaymentAPI = async (paymentId) => {
   const response = await axios.post(
-    `https://ai-content-generator-lsi9-kyyka1wgl-lavarajus-projects.vercel.app/
+    `https://ai-content-generator-lsi9-git-main-lavarajus-projects.vercel.app/
     
     api/v1/stripe/verify-payment/${paymentId}`,
     {},
