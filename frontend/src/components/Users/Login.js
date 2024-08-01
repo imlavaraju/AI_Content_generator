@@ -16,25 +16,18 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+  //custom auth hook
   const { isAuthenticated, login } = useAuth();
-  const navigate = useNavigate();
 
-  // Redirect if user is already logged in
+  const navigate = useNavigate();
+  //Redirect if a user is login
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
-
-  // Mutation for login API
-  const mutation = useMutation({
-    mutationFn: loginAPI,
-    onSuccess: () => {
-      login();
-      navigate("/dashboard");
-    },
-  });
-
+  }, [isAuthenticated]);
+  //mutation
+  const mutation = useMutation({ mutationFn: loginAPI });
   // Formik setup for form handling
   const formik = useFormik({
     initialValues: {
@@ -43,28 +36,40 @@ const Login = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      // Here, you would typically handle form submission
+
       mutation.mutate(values);
+
+      // Simulate login success and navigate to dashboard
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 5000);
     },
   });
-
+  //Update is authenticated
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      login();
+    }
+  }, [mutation.isSuccess]);
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 m-4">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
           Login to Your Account
         </h2>
-        {/* Display loading */}
-        {mutation.isLoading && (
+        {/* display loading */}
+        {mutation.isPending && (
           <StatusMessage type="loading" message="Loading..." />
         )}
-        {/* Display error */}
+        {/* display error */}
         {mutation.isError && (
           <StatusMessage
             type="error"
             message={mutation?.error?.response?.data?.message}
           />
         )}
-        {/* Display success */}
+        {/* display success */}
         {mutation.isSuccess && (
           <StatusMessage type="success" message="Login success" />
         )}
