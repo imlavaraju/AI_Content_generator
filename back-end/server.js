@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 8090;
 
 // CORS options
 const corsOptions = {
-  origin: "https://ai-content-generator-hazel.vercel.app",
+  origin: "*", // Allow any origin
   credentials: true,
 };
 
@@ -105,6 +105,11 @@ cron.schedule("0 0 1 * * *", async () => {
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/openai", openAIRouter);
 app.use("/api/v1/stripe", stripeRouter);
+// Root route
+app.get("/", (req, res) => {
+  res.status(200).json("success");
+});
+
 
 // Error handler middleware
 app.use(errorHandler);
