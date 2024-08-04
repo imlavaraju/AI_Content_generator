@@ -13,22 +13,11 @@ require("./utils/connectDB")();
 const app = express();
 const PORT = process.env.PORT || 8090;
 
-// CORS options
-const corsOptions = {
-  origin: "https://ai-content-generator-hazel.vercel.app",
-  credentials: true, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-app.use(cors(corsOptions)); // Use CORS with options
-
-// Middlewares
-app.use(express.json()); // Parse incoming JSON data
-app.use(cookieParser()); // Parse cookies
-
-// Cron for the trial period : run every single second
+//Cron for the trial period : run every single
 cron.schedule("0 0 * * * *", async () => {
   console.log("This task runs every second");
   try {
+    //get the current date
     const today = new Date();
     const updatedUser = await User.updateMany(
       {
@@ -47,9 +36,10 @@ cron.schedule("0 0 * * * *", async () => {
   }
 });
 
-// Cron for the Free plan: run at the end of every month
+//Cron for the Free plan: run at the end of every month
 cron.schedule("0 0 1 * * *", async () => {
   try {
+    //get the current date
     const today = new Date();
     await User.updateMany(
       {
@@ -65,9 +55,10 @@ cron.schedule("0 0 1 * * *", async () => {
   }
 });
 
-// Cron for the Basic plan: run at the end of every month
+//Cron for the Basic plan: run at the end of every month
 cron.schedule("0 0 1 * * *", async () => {
   try {
+    //get the current date
     const today = new Date();
     await User.updateMany(
       {
@@ -83,9 +74,10 @@ cron.schedule("0 0 1 * * *", async () => {
   }
 });
 
-// Cron for the Premium plan: run at the end of every month
+//Cron for the Premium plan: run at the end of every month
 cron.schedule("0 0 1 * * *", async () => {
   try {
+    //get the current date
     const today = new Date();
     await User.updateMany(
       {
@@ -100,19 +92,22 @@ cron.schedule("0 0 1 * * *", async () => {
     console.log(error);
   }
 });
+//Cron paid plan
 
-// Routes
+//----middlewares----
+app.use(express.json()); //pass incoming json data
+app.use(cookieParser()); //pass the cookie automatically
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+app.use(cors(corsOptions));
+//----Routes-----
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/openai", openAIRouter);
 app.use("/api/v1/stripe", stripeRouter);
-// Root route
-app.get("/", (req, res) => {
-  res.status(200).json("success");
-});
 
-
-// Error handler middleware
+//---Error handler middleware----
 app.use(errorHandler);
-
-// Start the server
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+//start the server
+app.listen(PORT, console.log(`Server is running on port ${PORT}`));
